@@ -375,7 +375,7 @@ app.delete('/end_chat/:userId/:receiverId', async (req, res) => {
   // Add this route to your existing Express.js application
   app.get('/get_unread_message_count/:userId', (req, res) => {
     const user_id = req.params.userId;
-    const query = 'SELECT COUNT(*) AS unread_count FROM messages WHERE sender_id = ? AND is_read = 0';
+    const query = 'SELECT COUNT(*) AS unread_count FROM messages WHERE receiver_id = ? AND is_read = 0';
 
     db.query(query, [user_id], (err, result) => {
         if (err) {
