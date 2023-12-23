@@ -372,6 +372,23 @@ app.delete('/end_chat/:userId/:receiverId', async (req, res) => {
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
   });
+  // Add this route to your existing Express.js application
+  app.get('/get_unread_message_count/:userId', (req, res) => {
+    const user_id = req.params.userId;
+    const query = 'SELECT COUNT(*) AS unread_count FROM messages WHERE sender_id = ? AND is_read = 0';
+
+    db.query(query, [user_id], (err, result) => {
+        if (err) {
+            console.error('Error getting unread message count:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            const unreadCount = result[0] ? result[0].unread_count : 0;
+            res.status(200).json({ unread_count: unreadCount });
+        }
+    });
+});
+
+  
 //business profiles
 //create a business profile
 
