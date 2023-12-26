@@ -46,10 +46,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const privateKey = fs.readFileSync('private-key.pem', 'utf8');
-const certificate = fs.readFileSync('certificate.pem', 'utf8');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/server.moneyhive-mw.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/server.moneyhive-mw.com/fullchain.pem', 'utf8');
 
 const credentials = { key: privateKey, cert: certificate };
+
 
 const httpsServer = https.createServer(credentials, app);
 // Define a route for fetching and sending "users" data as JSON
