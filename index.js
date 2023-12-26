@@ -47,7 +47,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypcleart/live/moneyhive-mw.com/fullchain.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/fullchain.pem', 'utf8');
 
 const credentials = { key: privateKey, cert: certificate };
 
