@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const https = require('https');
+const fs = require('fs');
 const db = require("./config/db.js"); // Import your database connection from db.js
 const sgMail = require('@sendgrid/mail');
 const passport = require('passport');
@@ -44,7 +46,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+const privateKey = fs.readFileSync('private-key.pem', 'utf8');
+const certificate = fs.readFileSync('certificate.pem', 'utf8');
 
+const credentials = { key: privateKey, cert: certificate };
+
+const httpsServer = https.createServer(credentials, app);
 // Define a route for fetching and sending "users" data as JSON
 app.get("/api/users", (req, res) => {
     db.query("SELECT * FROM users", (error, results) => {
@@ -76,7 +83,7 @@ const accountID = generateRandomNumber();
     db.query("INSERT INTO users (firstName, lastName, phone, email, password, category, country, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [formData.firstname, formData.lastname, formData.phone, formData.email, formData.password, formData.category, formData.country, accountID],
         (error, results) => {
             if (error) {
-                //console.error("Error registering user:", error);
+                console.error("Error registering user:", error);
                 res.status(500).json({ message: "Error registering user" });
             } else {
                 //console.log("User registered successfully");
@@ -395,7 +402,6 @@ app.delete('/end_chat/:userId/:receiverId', async (req, res) => {
 
 // set port, listen for requests
 const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-    console.log(sendgridApiKey);
-});
+httpsServer.listen(PORT, () => {
+    console.log(`Server running on https://moneyhive-mw.com:${PORT}`);
+  })
