@@ -29,7 +29,7 @@ app.use(cors({
     origin: '*'
 }));
 
-// Set the SendGrid API key
+// Set the SendGrid API keygit
 sgMail.setApiKey(sendgridApiKey);
 
 
@@ -46,25 +46,41 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/fullchain.pem', 'utf8');
+//const privateKey = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/privkey.pem', 'utf8');
+//const certificate = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/fullchain.pem', 'utf8');
 
-const credentials = { key: privateKey, cert: certificate };
+//const credentials = { key: privateKey, cert: certificate };
 
 
-const httpsServer = https.createServer(credentials, app);
+//const httpsServer = https.createServer(credentials, app);
 // Define a route for fetching and sending "users" data as JSON
-app.get("/api/users", (req, res) => {
-    db.query("SELECT * FROM users", (error, results) => {
-        if (error) {
-           // console.error("Error fetching users data:", error);
-            res.status(500).json({ message: "Error fetching users data" });
+app.post("/api/users", (req, res) => {
+    const { loginValue, password } = req.body;
+  
+    if (!loginValue || !password) {
+      return res.status(400).json({ message: "Please provide loginValue and password for user authentication." });
+    }
+  
+    // Perform authentication using loginValue and password
+    // Your authentication logic goes here
+  
+    // Example: Fetch user data from the database based on loginValue and password
+    db.query("SELECT * FROM users WHERE (email = ? OR phone = ?) AND password = ?", [loginValue, loginValue, password], (error, results) => {
+      if (error) {
+        console.error("Error fetching user data:", error);
+        res.status(500).json({ message: "Error fetching user data" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "User not found" });
         } else {
-           // console.log("Users data fetched successfully");
-            res.status(200).json(results);
+          const user = results[0];
+          res.status(200).json(user);
         }
+      }
     });
-});
+  });
+  
+
 
 
 // Create a POST route for user registration
@@ -138,7 +154,7 @@ app.post('/verification', (req, res) => {
 passport.use(new GoogleStrategy({
         clientID: '446811447600-dueug22p363u2h1mblorl29f2vqok2oe.apps.googleusercontent.com',
         clientSecret: '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',
-        callbackURL: 'http://ec2-54-201-138-205.us-west-2.compute.amazonaws.com:3000/auth/google/callback'
+        callbackURL: 'https://moneyhive-mw.com:3000/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
         // Retrieve email address from the profile
@@ -403,6 +419,11 @@ app.delete('/end_chat/:userId/:receiverId', async (req, res) => {
 
 // set port, listen for requests
 const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+    console.log(sendgridApiKey);
+});
+/*
 httpsServer.listen(PORT, () => {
     console.log(`Server running on https://moneyhive-mw.com:${PORT}`);
-  })
+  })*/
