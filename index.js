@@ -154,7 +154,7 @@ app.post('/verification', (req, res) => {
 passport.use(new GoogleStrategy({
         clientID: '446811447600-dueug22p363u2h1mblorl29f2vqok2oe.apps.googleusercontent.com',
         clientSecret: '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',
-        callbackURL: 'https://moneyhive-mw.com:3000/auth/google/callback'
+        callbackURL: 'https://malh.fun:3000/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
         // Retrieve email address from the profile
