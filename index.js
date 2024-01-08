@@ -46,13 +46,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//const privateKey = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/privkey.pem', 'utf8');
-//const certificate = fs.readFileSync('/etc/letsencrypt/live/moneyhive-mw.com/fullchain.pem', 'utf8');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/malh.fun/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/malh.fun/fullchain.pem', 'utf8');
 
-//const credentials = { key: privateKey, cert: certificate };
+const credentials = { key: privateKey, cert: certificate };
 
 
-//const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(credentials, app);
 // Define a route for fetching and sending "users" data as JSON
 app.post("/api/users", (req, res) => {
     const { loginValue, password } = req.body;
@@ -419,11 +419,13 @@ app.delete('/end_chat/:userId/:receiverId', async (req, res) => {
 
 // set port, listen for requests
 const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-    console.log(sendgridApiKey);
-});
-/*
 httpsServer.listen(PORT, () => {
     console.log(`Server running on https://moneyhive-mw.com:${PORT}`);
-  })*/
+  });
+
+/*
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+    console.log(sendgridApiKey);
+});*/
