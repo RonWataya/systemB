@@ -186,7 +186,7 @@ app.get('/auth/google',
 
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
     const userEmail = req.user.email;
-    const userDisplay = req.user. displayName;
+    const userDisplay = req.user.displayName;
     db.query('SELECT * FROM users WHERE email = ?', [userEmail], (error, results) => {
         if (error) {
             console.error('Error fetching user data:', error);
