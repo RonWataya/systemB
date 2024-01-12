@@ -190,8 +190,7 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
     db.query('SELECT * FROM users WHERE email = ?', [userEmail], (error, results) => {
         if (error) {
             console.error('Error fetching user data:', error);
-            return res.redirect(`https://moneyhive-mw.com/google-registration.html?email=${userEmail}&displayName=${userDisplay}
-            `);
+            return res.status(500).json({ message: 'Error fetching user data' });
         } else {
             if (results.length > 0) {
                 const user = results[0]; // Assuming the first result is the user data
@@ -227,7 +226,8 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
                     return res.redirect('https://moneyhive-mw.com/index.html');
                 }
             } else {
-                return res.redirect('https://moneyhive-mw.com/index.html');
+              return res.redirect(`https://moneyhive-mw.com/g.html?email=${userEmail}&displayName=${userDisplay}
+              `);
             }
         }
     });
