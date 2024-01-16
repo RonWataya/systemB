@@ -205,9 +205,9 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
                     redirectUrl = 'https://moneyhive-mw.com/business/index.html';
                 } else if ((category === 'Micro Lender' || category === 'Microfinancier') && status === 'freemium') {
                     redirectUrl = 'https://moneyhive-mw.com/free-business/index.html';
-                } else if (category === 'general' && status === 'premium') {
+                } else if (category === 'General' && status === 'premium') {
                     redirectUrl = 'https://moneyhive-mw.com/general/index.html';
-                } else if (category === 'general' && status === 'freemium') {
+                } else if (category === 'General' && status === 'freemium') {
                     redirectUrl = 'https://moneyhive-mw.com/free-general/index.html';
                 } else if (category === 'Investor' && status === 'premium') {
                     redirectUrl = 'https://moneyhive-mw.com/investor/index.html';
