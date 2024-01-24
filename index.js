@@ -319,7 +319,7 @@ app.all('/auth/logout', (req, res) => {
 
 // API endpoint to send a message
 app.post('/send_message', (req, res) => {
-  const { sender_id, receiver_id, sender_name,content } = req.body;
+  const { sender_id, receiver_id, sender_name,content, targetmail} = req.body;
   const query = 'INSERT INTO messages (sender_id, receiver_id, name, content) VALUES (?, ?, ?, ?)';
   db.query(query, [sender_id, receiver_id, sender_name,content], (err, result) => {
     if (err) {
@@ -329,14 +329,14 @@ app.post('/send_message', (req, res) => {
       res.status(200).json({ message: 'Message sent' });
       const formData = req.body;
     const ms = {
-        to: `${formData. targetmail}`,
+        to: `${targetmail}`,
         from: 'info@moneyhive-mw.com',
         subject: 'New Message alert',
         text: 'Notification',
         html: `
         <strong>You have received a new message! login into your <a href="https://moneyhive-mw.com"> moneyhive </a> account and check messages tab</strong> <br>
-        Message from : ${formData.sender_name}<br>
-        Message : ${formData.content}<br>
+        <span style="font-weight: bold; color: grey;">From </span>: ${sender_name}<br>
+        <span style="font-weight: bold; color: grey;">Message </span>: ${content}<br>
 
        <br><br><br>
        <p><span style="color:orange;">We at Moneyhive appreciate your services on our platform, good day!</span></p><br>
