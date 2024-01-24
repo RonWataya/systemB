@@ -328,8 +328,6 @@ app.post('/send_message', (req, res) => {
     } else {
       res.status(200).json({ message: 'Message sent' });
       const formData = req.body;
-      
-
     const ms = {
         to: `${formData. targetmail}`,
         from: 'info@moneyhive-mw.com',
@@ -337,10 +335,11 @@ app.post('/send_message', (req, res) => {
         text: 'Notification',
         html: `
         <strong>You have received a new message! login into your <a href="https://moneyhive-mw.com"> moneyhive </a> account and check messages tab</strong> <br>
-        Sender Name : ${formData.sender_name}<br>
-        Message : ${formData.messageContent}<br>
+        Message from : ${formData.sender_name}<br>
+        Message : ${formData.content}<br>
 
-        <p>We at Moneyhive appreciate your services on our platform, good day!</p><br><br><br>
+       <br><br><br>
+       <p><span style="color:orange;">We at Moneyhive appreciate your services on our platform, good day!</span></p><br>
         Support Team<br>
         <a href="https://moneyhive-mw.com">www.moneyhive-mw.com</a>
       `,
