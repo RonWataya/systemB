@@ -327,6 +327,35 @@ app.post('/send_message', (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
       res.status(200).json({ message: 'Message sent' });
+      const formData = req.body;
+      
+
+    const ms = {
+        to: `${formData.targetMail}`,
+        from: 'info@moneyhive-mw.com',
+        subject: 'New Message alert',
+        text: 'Notification',
+        html: `
+        <strong>You have received a new message! login into your <a href="https://moneyhive-mw.com"> moneyhive </a> account and check messages tab</strong> <br>
+        Sender Name : ${formData.Name}<br>
+        Message : ${formData.message}<br>
+
+        We at Moneyhive appreciate your services on our platform, good day!<br><br><br>
+        Support Team<br>
+        www.moneyhive-mw.com
+      `,
+    };
+
+    sgMail
+        .send(ms)
+        .then(() => {
+            console.log('Email sent');
+            
+        })
+        .catch((error) => {
+            console.error(error);
+            
+        });
     }
   });
 });
