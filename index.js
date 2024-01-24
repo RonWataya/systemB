@@ -331,18 +331,18 @@ app.post('/send_message', (req, res) => {
       
 
     const ms = {
-        to: `${formData.targetMail}`,
+        to: `${formData. targetmail}`,
         from: 'info@moneyhive-mw.com',
         subject: 'New Message alert',
         text: 'Notification',
         html: `
         <strong>You have received a new message! login into your <a href="https://moneyhive-mw.com"> moneyhive </a> account and check messages tab</strong> <br>
-        Sender Name : ${formData.Name}<br>
-        Message : ${formData.message}<br>
+        Sender Name : ${formData.sender_name}<br>
+        Message : ${formData.messageContent}<br>
 
-        We at Moneyhive appreciate your services on our platform, good day!<br><br><br>
+        <p>We at Moneyhive appreciate your services on our platform, good day!</p><br><br><br>
         Support Team<br>
-        www.moneyhive-mw.com
+        <a href="https://moneyhive-mw.com">www.moneyhive-mw.com</a>
       `,
     };
 
