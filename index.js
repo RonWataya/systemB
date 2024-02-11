@@ -53,7 +53,7 @@ const credentials = { key: privateKey, cert: certificate };
 
 
 const httpsServer = https.createServer(credentials, app);
-// Define a route for fetching and sending "users" data as JSON
+//Define a route for fetching and sending "users" data as JSON
 app.post("/api/users", (req, res) => {
     const { loginValue, password } = req.body;
   
@@ -87,6 +87,10 @@ app.post("/api/users", (req, res) => {
 app.post("/api/register", (req, res) => {
     // Parse the JSON data from the request body
     const formData = req.body;
+    console.log(req.body.phone); // Check the value of phone
+    const sanitizedPhone = req.body.phone.replace(/^\D+/, '');
+    console.log(sanitizedPhone); 
+
     function generateRandomNumber() {
     // Generate a random number with 12 digits
     const randomNumber = Math.floor(100000000000 + Math.random() * 900000000000);
@@ -97,7 +101,7 @@ const accountID = generateRandomNumber();
     //console.log('Received Form Data:', formData);
     // Perform user registration logic (insert data into the database)
     // Replace the following lines with your actual user registration code
-    db.query("INSERT INTO users (firstName, lastName, phone, email, password, category, country, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [formData.firstname, formData.lastname, formData.phone, formData.email, formData.password, formData.category, formData.country, accountID],
+    db.query("INSERT INTO users (firstName, lastName, phone, email, password, category, country, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [formData.firstname, formData.lastname, sanitizedPhone, formData.email, formData.password, formData.category, formData.country, accountID],
         (error, results) => {
             if (error) {
                 console.error("Error registering user:", error);
@@ -450,12 +454,14 @@ app.delete('/end_chat/:userId/:receiverId', async (req, res) => {
 // set port, listen for requests
 const PORT = 3000;
 httpsServer.listen(PORT, () => {
-    console.log(`Server running on https://moneyhive-mw.com:${PORT}`);
-  });
+  console.log(`Server running on https://moneyhive-mw.com:${PORT}`);
+});
+
 
 /*
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+  console.log(sendgridApiKey);
+});
 
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-    console.log(sendgridApiKey);
-});*/
+ */
